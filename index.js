@@ -32,6 +32,8 @@ app.use(cors(corsOptions));
 app.use('/api', userRoutes);
 app.use('/api', acountRoutes);
 
-app.listen(4000, () => {
-    console.log('Servidor funcionando en el puerto 4000');
+const port = process.env.PORT || 4000;
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
