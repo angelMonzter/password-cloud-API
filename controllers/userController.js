@@ -175,11 +175,13 @@ const recoberyPassword = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-    const { correo, password } = req.body;
-  
+
+    const password_input = req.body.password;
+    const correo_input = req.body.correo;
+
     // Comprobar si el usuario existe
     const query = 'SELECT * FROM usuario WHERE correo = ?';
-    db.query(query, [correo], async (err, result) => {
+    db.query(query, [correo_input], async (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ success: false, message: 'Error del servidor' });
@@ -195,14 +197,16 @@ const loginUser = async (req, res) => {
         }
 
         // Verificar la contraseña ingresada con la almacenada en la base de datos
-        const validPassword = await bcrypt.compare(password, result[0].password);
+        const validPassword = await bcrypt.compare(password_input, result[0].password);
 
         if (!validPassword) {
             return res.status(400).json({ success: false, message: 'Contraseña incorrecta' });
         }
         
+        const { password, token, confirmado, ...perfil } = result[0];
+
         //return res.status(200).json({ success: true, message: 'cuenta ' + result[0].confirmado + ' confirmada' });
-        return res.status(200).json({ token: generarJWT(result[0].usuario_id)});
+        return res.status(200).json({ token: generarJWT(result[0].usuario_id), perfil });
     });
 };
 
