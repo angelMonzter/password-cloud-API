@@ -5,7 +5,8 @@ import {
     editAcount,
     getAcount,
     copyPassword,
-    searchAcount
+    searchAcount,
+    totalAcount
 } from '../controllers/acountController.js'; 
 import checkAuth from "../middleware/authMiddleware.js";
 
@@ -19,6 +20,8 @@ router.delete('/acount/:id', checkAuth, deleteAcount);
 router.put('/acount/:id', checkAuth, editAcount);
 // Ruta para obtener cuentas 
 router.get('/acount/:id', checkAuth, getAcount);
+// Ruta para obtener total de cuentas 
+router.get('/acount-total/:id', checkAuth, totalAcount);
 // Ruta para obtener password de la cuenta 
 router.get('/show-password/:id', checkAuth, copyPassword);
 // Ruta para obtener cuenta por busqueda

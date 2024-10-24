@@ -33,13 +33,13 @@ const registerUser = async (req, res) => { // Declarar la función como async
         bcrypt.hash(password, 10, async (err, hash) => { // Agregar async aquí también si usas await dentro
             if (err) throw err;
 
-            const id = uuidv4();
+            const id = uuidv4().slice(0, 10);
             const token = uuidv4().slice(0, 10);
 
             const insertUserQuery = 'INSERT INTO usuario (usuario_id, nombre, usuario, correo, password, token) VALUES (?, ?, ?, ?, ?, ?)';
             db.query(insertUserQuery, [id, nombre, usuario, correo, hash, token], async (err, result) => {
                 if (err) throw err;
-
+                
                 // Enviar correo de verificación
                 await sendVerificationEmail(correo, nombre, token); // Aquí ahora el await es válido
 
